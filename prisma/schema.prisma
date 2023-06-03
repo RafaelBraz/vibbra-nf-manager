@@ -1,0 +1,98 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-1.0.x"]
+}
+
+model User {
+  id          String           @id @default(cuid())
+  email       String           @unique
+  name        String
+  cnpj        Int
+  companyName String
+  phone       Int
+  password    String
+  partners    PartnerCompany[]
+  categories  Category[]
+  invoices    Invoice[]
+  expenses    Expense[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+}
+
+model PartnerCompany {
+  id            String    @id @default(cuid())
+  cnpj          Int
+  name          String
+  corporateName String
+  expenses      Invoice[]
+  invoices      Expense[]
+  partnerOf     User      @relation(fields: [partnerOfId], references: [id])
+  partnerOfId   String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  @@index([partnerOfId])
+}
+
+model Category {
+  id           String    @id @default(cuid())
+  name         String    @unique
+  description  String
+  archieved    Boolean   @default(false)
+  expenses     Expense[]
+  categoryOf   User      @relation(fields: [categoryOfId], references: [id])
+  categoryOfId String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  @@index([categoryOfId])
+}
+
+model Invoice {
+  id          String         @id @default(cuid())
+  value       Float
+  number      Int
+  description String
+  providedAt  DateTime
+  paymentIn   DateTime
+  company     PartnerCompany @relation(fields: [companyId], references: [id])
+  companyId   String
+  invoiceOf   User           @relation(fields: [invoiceOfId], references: [id])
+  invoiceOfId String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+
+  @@index([companyId])
+  @@index([invoiceOfId])
+}
+
+model Expense {
+  id          String          @id @default(cuid())
+  value       Float
+  name        String
+  providedAt  DateTime
+  paymentIn   DateTime
+  category    Category        @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  expenseOf   User            @relation(fields: [expenseOfId], references: [id])
+  expenseOfId String
+  company     PartnerCompany? @relation(fields: [companyId], references: [id])
+  companyId   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  deletedAt   DateTime?
+
+  @@index([categoryId])
+  @@index([companyId])
+  @@index([expenseOfId])
+}
