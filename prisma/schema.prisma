@@ -13,9 +13,9 @@ model User {
   id          String           @id @default(cuid())
   email       String           @unique
   name        String
-  cnpj        Int
+  cnpj        String           @unique
   companyName String
-  phone       Int
+  phone       String
   password    String
   partners    PartnerCompany[]
   categories  Category[]
@@ -28,9 +28,9 @@ model User {
 
 model PartnerCompany {
   id            String    @id @default(cuid())
-  cnpj          Int
+  cnpj          Int       @unique
   name          String
-  corporateName String
+  corporateName String    @unique
   expenses      Invoice[]
   invoices      Expense[]
   partnerOf     User      @relation(fields: [partnerOfId], references: [id])
@@ -60,7 +60,7 @@ model Category {
 model Invoice {
   id          String         @id @default(cuid())
   value       Float
-  number      Int
+  number      Int            @unique
   description String
   providedAt  DateTime
   paymentIn   DateTime
