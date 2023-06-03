@@ -3,7 +3,7 @@ import { UserService } from "@/services/user/user.service";
 interface IGetUserUseCaseParams {
   where: {
     id?: string;
-    cnpj?: number;
+    cnpj?: string;
     email?: string;
   };
 }
