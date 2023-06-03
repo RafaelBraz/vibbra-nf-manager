@@ -1,92 +1,103 @@
-# NF Manager
+# Informações do projeto
 
+**Nome do projeto:** Controle de NF Freelancer
 
+**Cliente:** Vibbraneo
 
-## Getting started
+**Prazo de entrega:** 10 dias úteis
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+<br />
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+# Estimativas de horas
 
-## Add your files
+### Estrutura de dados da aplicação: **3 horas**
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- Arquitetura do banco de dados (BD) - 1h
+  - Integração com PlanetScale (serviço de BD na nuvem)
+  - Modelagem do banco de dados
+- Implementar API do BD - 2h
 
-```
-cd existing_repo
-git remote add origin https://git.vibbra.com.br/rafael-1685670947/nf-manager.git
-git branch -M main
-git push -uf origin main
-```
+### Agendamento de tarefas: **2 horas**
 
-## Integrate with your tools
+- Integração com Inngest (serviço de agendamento de tarefas) - 2h
 
-- [ ] [Set up project integrations](https://git.vibbra.com.br/rafael-1685670947/nf-manager/-/settings/integrations)
+### Envio de email/sms: **3 horas**
 
-## Collaborate with your team
+- Integração com MailerSend (serviço de envio de email/sms) - 1h
+- Implementar API de envio de email - 1h
+- Implementar API de envio de sms - 1h
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Cadastro/Login: **5 horas**
 
-## Test and Deploy
+- Cadastro via Google/Facebook/Email - 2h30
+  - Integração com serviço next-auth (serviço de autenticação)
+  - Integração com API do BD
+- Login via Google/Facebook/Email - 2h30
+  - Integração com serviço next-auth
+  - Integração com API do BD
 
-Use the built-in continuous integration in GitLab.
+### Tela Principal: **7 horas**
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- Integração com API do BD - 1h
+- Dashboard de visualização - 6h
+  - Filtragem dos dados
+  - Criação de gráficos de análise
+  - Estilização dos gráficos
 
-***
+### Menu de preferências: **7 horas**
 
-# Editing this README
+- Empresas parceiras - 2h
+  - Desenvolvimento do formulário de cadastro
+  - Desenvolvimento do formulário de edição
+- Categorias de despesas - 3h
+  - Desenvolvimento do formulário de cadastro
+  - Desenvolvimento do formulário de edição/exclusão
+- Limite de faturamento do MEI - 1h
+  - Desenvolvimento do formulário de edição
+- Alertas de faturamento - 1h
+  - Desenvolvimento do formulário de ativação
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Lançar notas fiscais: **2 horas**
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- Desenvolvimento do formulário de cadastro - 1h
+- Desenvolvimento do formulário de edição/exclusão - 1h
 
-## Name
-Choose a self-explaining name for your project.
+### Lançar despesas: **2 horas**
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- Desenvolvimento do formulário de cadastro - 1h
+- Desenvolvimento do formulário de edição/exclusão - 1h
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Notificação de faturamento: **6 horas**
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- Notificação mensal de limite - 3h
+- Alerta de proximidade de desenquadramento - 3h
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Total de horas trabalhadas: **37 horas**
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+<br />
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+# Missões
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## 1. Escopo
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+O escopo está simples e objetivo. Porém, abaixo estão alguns pontos que podem surgir como dúvida sobre o projeto:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+1. O faturamento anual é contabilizado em relação ao mês de competência ou ao mês de faturamento de uma NF?
+2. O projeto não trabalha com casos de MEI que acabou de ser criado (nesse caso, é usado o modelo de faturamento proporcional no primeiro ano).
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Esses dois casos foram resolvidos com algumas pesquisas sobre o MEI.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## 2. Estimativa de horas [(visualizar)](#estimativas-de-horas)
 
-## License
-For open source projects, say how it is licensed.
+## 3. Prazo de entrega
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+"Prazo de entrega" em [(Informações do projeto)](#informações-do-projeto)
+
+## 4. Log de atividades
+
+- [x] Avaliação de escopo do projeto (03/06/2023 - 10h00 à 03/06/2023 - 10h30)
+- [x] Estimativa de horas de desenvolvimento (03/06/2023 - 11h00 à 03/06/2023 - 12h45)
+- [x] Escolha de tecnologias (03/06/2023 - 11h00 à 03/06/2023 - 12h45)
+- [x] Estimativa de dias (03/06/2023 - 12h45 à 03/06/2023 - 12h50)
+- [x] Definição de entidades do sistema (03/06/2023 - 14h20 à 03/06/2023 - 14h30)
+- [x] Definição de tasks (03/06/2023 - 14h30 à 03/06/2023 - 15h00)
