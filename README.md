@@ -101,3 +101,4 @@ Esses dois casos foram resolvidos com algumas pesquisas sobre o MEI.
 - [x] Estimativa de dias (03/06/2023 - 12h45 à 03/06/2023 - 12h50)
 - [x] Definição de entidades do sistema (03/06/2023 - 14h20 à 03/06/2023 - 14h30)
 - [x] Definição de tasks (03/06/2023 - 14h30 à 03/06/2023 - 15h00)
+- [x] Inicialização do projeto (03/06/2023 - 15h05 à 03/06/2023 - 15h15)
