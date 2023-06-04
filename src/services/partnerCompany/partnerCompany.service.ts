@@ -21,9 +21,26 @@ export class PartnerCompanyService {
     });
   }
 
+  async update(params: {
+    where: Prisma.PartnerCompanyWhereUniqueInput;
+    data: Prisma.PartnerCompanyUpdateInput;
+  }) {
+    const { where, data } = params;
+    return this.prisma.partnerCompany.update({
+      where,
+      data,
+    });
+  }
+
   async create(data: Prisma.PartnerCompanyCreateInput) {
     return this.prisma.partnerCompany.create({
       data,
+    });
+  }
+
+  async delete(where: Prisma.PartnerCompanyWhereUniqueInput) {
+    return this.prisma.partnerCompany.delete({
+      where,
     });
   }
 }

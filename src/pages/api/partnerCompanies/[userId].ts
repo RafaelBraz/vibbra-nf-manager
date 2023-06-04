@@ -1,5 +1,8 @@
 import { PartnerCompanyService } from "@/services/partnerCompany/partnerCompany.service";
 import { CreatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/create.partnerCompany.use-case";
+import { DeletePartnerCompanyUseCase } from "@/use-cases/partnerCompany/delete.partnerCompany.use-case copy";
+import { GetPartnerCompanyUseCase } from "@/use-cases/partnerCompany/get.partnerCompany.use-case";
+import { GetManyPartnerCompanyUseCase } from "@/use-cases/partnerCompany/getMany.partnerCompany.use-case";
 import { UpdatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/update.partnerCompany.use-case";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -8,48 +11,32 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { cnpj, corporateName, name, userId, id } = req.body;
-
     const partnerCompanyService = new PartnerCompanyService();
 
     switch (req.method) {
-      case "POST":
-        const createPartnerCompanyUseCase = new CreatePartnerCompanyUseCase(
+      case "GET":
+        const { userId } = req.query;
+
+        if (!userId) {
+          throw new Error("User id is required.");
+        }
+
+        if (userId instanceof Array) {
+          throw new Error("Many ids is not allowed.");
+        }
+
+        const getManyPartnerCompanyUseCase = new GetManyPartnerCompanyUseCase(
           partnerCompanyService
         );
 
-        const createdPartnerCompany = await createPartnerCompanyUseCase.execute(
-          {
-            cnpj,
-            corporateName,
-            name,
-            userId,
-          }
-        );
+        const partnerCompanies = await getManyPartnerCompanyUseCase.execute({
+          where: {
+            partnerOfId: userId,
+          },
+        });
 
         return res.status(201).json({
-          partnerCompany: createdPartnerCompany,
-        });
-      case "PATCH":
-        const updatePartnerCompanyUseCase = new UpdatePartnerCompanyUseCase(
-          partnerCompanyService
-        );
-
-        const updatedPartnerCompany = await updatePartnerCompanyUseCase.execute(
-          {
-            where: {
-              id,
-            },
-            data: {
-              cnpj,
-              corporateName,
-              name,
-            },
-          }
-        );
-
-        return res.status(200).json({
-          partnerCompany: updatedPartnerCompany,
+          partnerCompanies,
         });
       default:
         return res.status(405).json({

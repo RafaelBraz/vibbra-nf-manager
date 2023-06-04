@@ -1,4 +1,5 @@
 import { PartnerCompanyService } from "@/services/partnerCompany/partnerCompany.service";
+import { DeletePartnerCompanyUseCase } from "@/use-cases/partnerCompany/delete.partnerCompany.use-case copy";
 import { GetPartnerCompanyUseCase } from "@/use-cases/partnerCompany/get.partnerCompany.use-case";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -7,22 +8,22 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    const { id } = req.query;
+    const partnerCompanyService = new PartnerCompanyService();
+
     switch (req.method) {
       case "GET":
-        const { id } = req.query;
-
-        const partnerCompanyService = new PartnerCompanyService();
-        const getPartnerCompanyUseCase = new GetPartnerCompanyUseCase(
-          partnerCompanyService
-        );
-
         if (!id) {
-          throw new Error("One id is required.");
+          throw new Error("Partner Company id is required.");
         }
 
         if (id instanceof Array) {
           throw new Error("Many ids is not allowed.");
         }
+
+        const getPartnerCompanyUseCase = new GetPartnerCompanyUseCase(
+          partnerCompanyService
+        );
 
         const partnerCompany = await getPartnerCompanyUseCase.execute({
           where: {
@@ -32,6 +33,30 @@ export default async function handler(
 
         return res.status(200).json({
           partnerCompany,
+        });
+      case "DELETE":
+        if (!id) {
+          throw new Error("Partner Company id is required.");
+        }
+
+        if (id instanceof Array) {
+          throw new Error("Many ids is not allowed.");
+        }
+
+        const deletePartnerCompanyUseCase = new DeletePartnerCompanyUseCase(
+          partnerCompanyService
+        );
+
+        const deletedPartnerCompany = await deletePartnerCompanyUseCase.execute(
+          {
+            where: {
+              id,
+            },
+          }
+        );
+
+        return res.status(200).json({
+          partnerCompany: deletedPartnerCompany,
         });
       default:
         return res.status(405).json({

@@ -105,3 +105,4 @@ Esses dois casos foram resolvidos com algumas pesquisas sobre o MEI.
 - [x] Modelagem das entidades no Prisma (03/06/2023 - 15h25 à 03/06/2023 - 15h45)
 - [x] Integração Next Api route + Prisma (03/06/2023 - 15h45 à 03/06/2023 - 16h45)
 - [x] Usuário: CRUD (03/06/2023 - 17h00 à 03/06/2023 - 17h40 + 03/06/2023 - 18h30 à 03/06/2023 - 19h30)
+- [x] Empresa Parceira: CRUD (03/06/2023 - 19h30 à 03/06/2023 - 19h50 + 03/06/2023 - 23h10 à 03/06/2023 - 23h50)
