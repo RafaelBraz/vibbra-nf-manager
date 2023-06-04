@@ -28,7 +28,7 @@ model User {
 
 model PartnerCompany {
   id            String    @id @default(cuid())
-  cnpj          Int       @unique
+  cnpj          String    @unique
   name          String
   corporateName String    @unique
   expenses      Invoice[]
