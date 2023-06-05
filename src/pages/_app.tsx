@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <main
-        className={`${inter.className} min-h-screen flex flex-col items-center p-24`}
+        className={`${inter.className} min-h-screen flex flex-col items-center`}
       >
         <Auth>
           <Component {...pageProps} />

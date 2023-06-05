@@ -1,15 +1,14 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import axios from "axios";
 
-interface ICreateUserFormProps {
-  onSubmit: () => void;
-}
+export function CreateProviderUserForm() {
+  const { data: session } = useSession();
 
-export function CreateUserForm({ onSubmit }: ICreateUserFormProps) {
   const emptyUser = {
-    email: "",
-    name: "",
+    email: session?.email ?? "",
+    name: session?.name ?? "",
     cnpj: "",
     companyName: "",
     password: "",
@@ -42,6 +41,10 @@ export function CreateUserForm({ onSubmit }: ICreateUserFormProps) {
     try {
       event.preventDefault();
 
+      if (!user.cnpj || !user.companyName || !user.password || !user.phone) {
+        alert("Todos os campos precisam ser preenchiodos.");
+      }
+
       if (user.password !== passwordConfirmation) {
         alert("Senha e confirmação não coincidem.");
       }
@@ -59,7 +62,7 @@ export function CreateUserForm({ onSubmit }: ICreateUserFormProps) {
         throw new Error("Erro na criação do usuário");
       }
 
-      onSubmit();
+      signOut();
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
@@ -80,28 +83,6 @@ export function CreateUserForm({ onSubmit }: ICreateUserFormProps) {
       className="p-4 flex flex-col gap-4 bg-zinc-300 rounded-md"
       onSubmit={handleSubmit}
     >
-      <label className="flex flex-col">
-        E-mail:
-        <input
-          name="email"
-          type="email"
-          value={user.email}
-          onChange={(e) => handleUserChange("email", e.target.value)}
-          required
-        />
-      </label>
-
-      <label className="flex flex-col">
-        Nome:
-        <input
-          name="name"
-          type="text"
-          value={user.name}
-          onChange={(e) => handleUserChange("name", e.target.value)}
-          required
-        />
-      </label>
-
       <label className="flex flex-col">
         CNPJ:
         <input
