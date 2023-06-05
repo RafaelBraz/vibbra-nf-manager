@@ -1,9 +1,5 @@
 import { PartnerCompanyService } from "@/services/partnerCompany/partnerCompany.service";
-import { CreatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/create.partnerCompany.use-case";
-import { DeletePartnerCompanyUseCase } from "@/use-cases/partnerCompany/delete.partnerCompany.use-case copy";
-import { GetPartnerCompanyUseCase } from "@/use-cases/partnerCompany/get.partnerCompany.use-case";
 import { GetManyPartnerCompanyUseCase } from "@/use-cases/partnerCompany/getMany.partnerCompany.use-case";
-import { UpdatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/update.partnerCompany.use-case";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
