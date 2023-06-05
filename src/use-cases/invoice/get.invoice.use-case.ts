@@ -23,7 +23,7 @@ export class GetInvoiceUseCase {
     });
 
     if (!invoice) {
-      throw new Error("Partner not found.");
+      throw new Error("Invoice not found.");
     }
 
     return invoice;
