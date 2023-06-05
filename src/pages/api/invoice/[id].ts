@@ -27,14 +27,14 @@ export default async function handler(
 
         const getInvoiceUseCase = new GetInvoiceUseCase(invoiceService);
 
-        const user = await getInvoiceUseCase.execute({
+        const invoice = await getInvoiceUseCase.execute({
           where: {
             id,
           },
         });
 
         return res.status(200).json({
-          user,
+          invoice,
         });
       case "PATCH":
         if (!id) {
