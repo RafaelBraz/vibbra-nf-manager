@@ -17,18 +17,18 @@ export class CreatePartnerCompanyUseCase {
       throw new Error("All fields are required.");
     }
 
-    const user = await this.partnerCompany.findMany({
+    const partnerCompany = await this.partnerCompany.findMany({
       where: {
         cnpj,
         corporateName,
       },
     });
 
-    if (user.length > 0) {
-      throw new Error("User already exists.");
+    if (partnerCompany.length > 0) {
+      throw new Error("Partner Company already exists.");
     }
 
-    const createdUser = await this.partnerCompany.create({
+    const createdPartnerCompany = await this.partnerCompany.create({
       cnpj,
       corporateName,
       name,
@@ -39,6 +39,6 @@ export class CreatePartnerCompanyUseCase {
       },
     });
 
-    return createdUser;
+    return createdPartnerCompany;
   }
 }
