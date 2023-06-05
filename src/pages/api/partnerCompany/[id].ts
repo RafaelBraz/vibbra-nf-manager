@@ -1,6 +1,7 @@
 import { PartnerCompanyService } from "@/services/partnerCompany/partnerCompany.service";
 import { DeletePartnerCompanyUseCase } from "@/use-cases/partnerCompany/delete.partnerCompany.use-case copy";
 import { GetPartnerCompanyUseCase } from "@/use-cases/partnerCompany/get.partnerCompany.use-case";
+import { UpdatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/update.partnerCompany.use-case";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -9,6 +10,7 @@ export default async function handler(
 ) {
   try {
     const { id } = req.query;
+    const { cnpj, corporateName, name } = req.body;
     const partnerCompanyService = new PartnerCompanyService();
 
     switch (req.method) {
@@ -33,6 +35,34 @@ export default async function handler(
 
         return res.status(200).json({
           partnerCompany,
+        });
+      case "PATCH":
+        if (!id) {
+          throw new Error("One id is required.");
+        }
+
+        if (id instanceof Array) {
+          throw new Error("Many ids is not allowed.");
+        }
+        const updatePartnerCompanyUseCase = new UpdatePartnerCompanyUseCase(
+          partnerCompanyService
+        );
+
+        const updatedPartnerCompany = await updatePartnerCompanyUseCase.execute(
+          {
+            where: {
+              id,
+            },
+            data: {
+              cnpj,
+              corporateName,
+              name,
+            },
+          }
+        );
+
+        return res.status(200).json({
+          partnerCompany: updatedPartnerCompany,
         });
       case "DELETE":
         if (!id) {

@@ -1,6 +1,5 @@
 import { PartnerCompanyService } from "@/services/partnerCompany/partnerCompany.service";
 import { CreatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/create.partnerCompany.use-case";
-import { UpdatePartnerCompanyUseCase } from "@/use-cases/partnerCompany/update.partnerCompany.use-case";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -8,8 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { cnpj, corporateName, name, userId, id } = req.body;
-
+    const { cnpj, corporateName, name, userId } = req.body;
     const partnerCompanyService = new PartnerCompanyService();
 
     switch (req.method) {
@@ -29,27 +27,6 @@ export default async function handler(
 
         return res.status(201).json({
           partnerCompany: createdPartnerCompany,
-        });
-      case "PATCH":
-        const updatePartnerCompanyUseCase = new UpdatePartnerCompanyUseCase(
-          partnerCompanyService
-        );
-
-        const updatedPartnerCompany = await updatePartnerCompanyUseCase.execute(
-          {
-            where: {
-              id,
-            },
-            data: {
-              cnpj,
-              corporateName,
-              name,
-            },
-          }
-        );
-
-        return res.status(200).json({
-          partnerCompany: updatedPartnerCompany,
         });
       default:
         return res.status(405).json({
