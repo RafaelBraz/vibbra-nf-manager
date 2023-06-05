@@ -7,13 +7,14 @@ export function CreateUserForm() {
   const { data: session } = useSession();
 
   const emptyUser = {
-    email: session?.user.email ?? "",
-    name: session?.user.name ?? "",
+    email: session?.email ?? "",
+    name: session?.name ?? "",
     cnpj: "",
     companyName: "",
     password: "",
     phone: "",
   };
+
   const [user, setUser] = useState(emptyUser);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [passwordVisibility, setPasswordVisibility] = useState({
