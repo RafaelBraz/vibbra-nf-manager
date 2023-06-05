@@ -4,10 +4,9 @@ import { UserService } from "@/services/user/user.service";
 import { GetUserUseCase } from "@/use-cases/user/get.user.use-case";
 
 export const authOptions = {
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
-      name: "Email e senha",
+      name: "Email and Password",
       credentials: {
         email: {
           label: "E-mail:",
