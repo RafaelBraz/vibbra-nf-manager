@@ -109,3 +109,4 @@ Esses dois casos foram resolvidos com algumas pesquisas sobre o MEI.
 - [x] Nota fiscal: CRUD (04/06/2023 - 20h10 à 04/06/2023 - 20h50)
 - [x] Categoria: CRUD (05/06/2023 - 09h50 à 05/06/2023 - 10h20)
 - [x] Expense: CRUD (05/06/2023 - 10h25 à 05/06/2023 - 10h55)
+- [x] Login & Cadastro (next-auth) (05/06/2023 - 11h30 à 05/06/2023 - 12h50 + 05/06/2023 - 13h30 à 05/06/2023 - 16h25)

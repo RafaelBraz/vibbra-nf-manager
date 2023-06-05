@@ -45,7 +45,7 @@ model PartnerCompany {
 model Category {
   id           String    @id @default(cuid())
   name         String    @unique
-  description  String
+  description  String    @db.Text
   archieved    Boolean   @default(false)
   expenses     Expense[]
   categoryOf   User      @relation(fields: [categoryOfId], references: [id])
@@ -61,7 +61,7 @@ model Invoice {
   id          String         @id @default(cuid())
   value       Float
   number      Int            @unique
-  description String
+  description String         @db.Text
   providedAt  DateTime
   paymentIn   DateTime
   company     PartnerCompany @relation(fields: [companyId], references: [id])

@@ -1,5 +1,6 @@
 import { UserService } from "@/services/user/user.service";
 import { GetUserUseCase } from "@/use-cases/user/get.user.use-case";
+import { removeObjectAttribute } from "@/util/object";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -29,7 +30,7 @@ export default async function handler(
         });
 
         return res.status(200).json({
-          user,
+          user: removeObjectAttribute(user, "password"),
         });
       default:
         return res.status(405).json({
