@@ -34,16 +34,20 @@ export class UpdateExpenseUseCase {
         value,
         providedAt,
         paymentIn,
-        category: {
-          connect: {
-            id: categoryId,
-          },
-        },
-        company: {
-          connect: {
-            id: companyId,
-          },
-        },
+        category: categoryId
+          ? {
+              connect: {
+                id: categoryId,
+              },
+            }
+          : undefined,
+        company: companyId
+          ? {
+              connect: {
+                id: companyId,
+              },
+            }
+          : undefined,
       },
     });
 

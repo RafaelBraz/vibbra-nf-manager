@@ -4,13 +4,11 @@ interface ICreateExpenseUseCaseParams {
   data: {
     userId: string;
     companyId: string;
-    number: number;
+    categoryId: string;
+    name: string;
     value: number;
-    description: string;
     providedAt: string;
     paymentIn: string;
-    name: string;
-    categoryId: string;
   };
 }
 
