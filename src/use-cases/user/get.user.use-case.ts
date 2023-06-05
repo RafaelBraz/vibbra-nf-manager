@@ -24,10 +24,6 @@ export class GetUserUseCase {
       email,
     });
 
-    if (!user) {
-      throw new Error("User not found.");
-    }
-
     return user;
   }
 }
