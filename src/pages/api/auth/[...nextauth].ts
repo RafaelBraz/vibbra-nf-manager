@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
 import { UserService } from "@/services/user/user.service";
 import { GetUserUseCase } from "@/use-cases/user/get.user.use-case";
-import { CreateUserUseCase } from "@/use-cases/user/create.user.use-case";
 
 export const authOptions = {
   providers: [
@@ -35,7 +34,35 @@ export const authOptions = {
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID as string,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
+      profile(profile, tokens) {
+        return {
+          ...profile,
+          test: "lkkk",
+        };
+      },
     }),
   ],
+  callbacks: {
+    async session({ session, user, token }) {
+      const email = session.user.email;
+      const name = session.user.name;
+
+      const userService = new UserService();
+      const getUserUseCase = new GetUserUseCase(userService);
+
+      const dbUser = await getUserUseCase.execute({
+        where: {
+          email,
+        },
+      });
+
+      return {
+        ...session,
+        email,
+        name,
+        user: dbUser,
+      };
+    },
+  },
 };
 export default NextAuth(authOptions);
