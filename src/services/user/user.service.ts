@@ -1,11 +1,11 @@
+import { PrismaClientSingleton } from "@/lib/prisma/prisma.singleton";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { hash } from "bcrypt";
 
 export class UserService {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = PrismaClientSingleton.getClient();
   }
 
   async findUnique(where: Prisma.UserWhereUniqueInput) {
