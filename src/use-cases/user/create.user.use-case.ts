@@ -1,4 +1,5 @@
 import { UserService } from "@/services/user/user.service";
+import { hash } from "bcrypt";
 
 interface ICreateUserUseCaseParams {
   cnpj: string;
@@ -30,12 +31,15 @@ export class CreateUserUseCase {
       throw new Error("User already exists.");
     }
 
+    const saltRounds = Number(process.env.SALT_ROUNDS);
+    const hashPassord = await hash(password, saltRounds);
+
     const createdUser = await this.userService.create({
       cnpj,
       companyName,
       email,
       name,
-      password,
+      password: hashPassord,
       phone,
     });
 
