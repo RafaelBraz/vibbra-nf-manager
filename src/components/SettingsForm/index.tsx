@@ -1,14 +1,21 @@
 import { FormEvent, useState } from "react";
 import { ToggleButton } from "../ToggleButton";
+import { useSession } from "next-auth/react";
 
 interface ISettingsFormProps {}
 
 export function SettingsForm({}: ISettingsFormProps) {
+  const { data: session } = useSession();
+
   const [settings, setSettings] = useState({
-    MEILimit: 81000,
-    notificationEmail: false,
-    notificationSMS: false,
+    MEILimit: session?.user?.MEILimit ?? 81000,
+    notificationEmail: session?.user?.emailAlert ?? false,
+    notificationSMS: session?.user?.smsAlert ?? false,
   });
+
+  if (!session) {
+    return <p>Loading...</p>;
+  }
 
   function handleSettingsChange(name: string, value: number | boolean) {
     setSettings((prev) => ({

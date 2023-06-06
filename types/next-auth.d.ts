@@ -4,6 +4,14 @@ declare module "next-auth" {
   interface Session {
     email: string;
     name: string;
-    user: DefaultSession["user"];
+    user: {
+      id: string;
+      cnpj: string;
+      companyName: string;
+      phone: string;
+      MEILimit: number;
+      emailAlert: boolean;
+      smsAlert: boolean;
+    } & DefaultSession["user"];
   }
 }
