@@ -1,0 +1,76 @@
+import { FormEvent, useState } from "react";
+import { ToggleButton } from "../ToggleButton";
+
+interface ISettingsFormProps {}
+
+export function SettingsForm({}: ISettingsFormProps) {
+  const [settings, setSettings] = useState({
+    MEILimit: 81000,
+    notificationEmail: false,
+    notificationSMS: false,
+  });
+
+  function handleSettingsChange(name: string, value: number | boolean) {
+    setSettings((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function handleSubmit(event: FormEvent) {
+    try {
+      event.preventDefault();
+    } catch (error) {}
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <h3 className="text-xl">Configurações</h3>
+
+      <div className="flex items-center justify-between gap-4">
+        <h4 className="text-lg">Limite de faturamento anual: </h4>
+
+        <input
+          className="p-2 outline-none border-2 rounded-md focus:border-zinc-900"
+          type="number"
+          name="limit"
+          value={settings.MEILimit}
+          onChange={(e) =>
+            handleSettingsChange("MEILimit", Number(e.target.value))
+          }
+        />
+      </div>
+
+      <div className="flex flex-col items-start gap-4">
+        <h4 className="text-lg">Notificações e Alertas: </h4>
+
+        <div className="w-full flex justify-between items-center gap-4">
+          <h5>Receber por E-mail</h5>
+
+          <ToggleButton
+            value={settings.notificationEmail}
+            onChange={(value) =>
+              handleSettingsChange("notificationEmail", value)
+            }
+          />
+        </div>
+
+        <div className="w-full flex justify-between items-center gap-4">
+          <h5>Receber por SMS</h5>
+
+          <ToggleButton
+            value={settings.notificationSMS}
+            onChange={(value) => handleSettingsChange("notificationSMS", value)}
+          />
+        </div>
+
+        <button
+          type={"submit"}
+          className="py-2 px-4 bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
+        >
+          Atualizar
+        </button>
+      </div>
+    </form>
+  );
+}

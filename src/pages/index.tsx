@@ -1,12 +1,11 @@
-import { useSession } from "next-auth/react";
+import { Dashboard } from "@/components/Dashboard";
+import { PreferencesMenu } from "@/components/PreferencesMenu";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
-    <div>
-      <h1>Home</h1>
-      <p>{session?.user?.email}</p>
+    <div className="p-1 w-full flex gap-1">
+      <Dashboard />
+      <PreferencesMenu />
     </div>
   );
 }
