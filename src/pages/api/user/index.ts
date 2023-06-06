@@ -23,8 +23,7 @@ export default async function handler(
           phone,
         });
 
-        return res.status(200).json({
-          message: `Done.`,
+        return res.status(201).json({
           user,
         });
       default:
