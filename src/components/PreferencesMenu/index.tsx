@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CreatePartnerForm } from "../CreatePartnerForm";
 import { SettingsForm } from "../SettingsForm";
 

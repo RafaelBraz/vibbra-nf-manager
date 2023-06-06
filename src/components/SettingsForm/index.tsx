@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { ToggleButton } from "../ToggleButton";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 interface ISettingsFormProps {}
 
@@ -24,10 +25,30 @@ export function SettingsForm({}: ISettingsFormProps) {
     }));
   }
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     try {
       event.preventDefault();
-    } catch (error) {}
+
+      const res = await axios(`/api/user/${session?.user.id}`, {
+        method: "PATCH",
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        data: {
+          MEILimit: settings.MEILimit,
+          emailAlert: settings.notificationEmail,
+          smsAlert: settings.notificationSMS,
+        },
+      });
+
+      if (res.status === 500) {
+        throw new Error("Erro na atualização das preferências.");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        throw error;
+      }
+    }
   }
 
   return (
