@@ -1,4 +1,4 @@
-import { InvoiceType } from "@/types/invoice.type";
+import type { InvoiceType } from "@/types/invoice.type";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -9,6 +9,9 @@ import { CreateInvoiceForm } from "../CreateInvoiceForm";
 import { UpdateInvoiceForm } from "../UpdateInvoiceForm";
 
 type ModalOperationType = "CREATE" | "UPDATE" | null;
+type SWRDataType = {
+  invoices: InvoiceType[];
+};
 
 export function InvoiceList() {
   const { data: session } = useSession();
@@ -18,7 +21,7 @@ export function InvoiceList() {
   const [updateInvoice, setUpdateInvoice] =
     useState<Partial<InvoiceType> | null>(null);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<SWRDataType>(
     `/api/invoices/${user?.id ?? ""}`,
     fetcher
   );
@@ -35,7 +38,7 @@ export function InvoiceList() {
     return <p>Erro ao carregar notas fiscais.</p>;
   }
 
-  const invoices: InvoiceType[] = data.invoices;
+  const invoices = data?.invoices ?? [];
 
   function handleInvoiceUpdate(id: string) {
     if (!id) {

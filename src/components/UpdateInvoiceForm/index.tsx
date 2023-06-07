@@ -12,6 +12,9 @@ interface IUpdateInvoiceFormProps {
   value: Partial<InvoiceType>;
   onClose: () => void;
 }
+type SWRDataType = {
+  partnerCompanies: PartnerCompanyType[];
+};
 
 export function UpdateInvoiceForm({ value, onClose }: IUpdateInvoiceFormProps) {
   const { data: session } = useSession();
@@ -29,7 +32,7 @@ export function UpdateInvoiceForm({ value, onClose }: IUpdateInvoiceFormProps) {
     data: partnersData,
     error,
     isLoading,
-  } = useSWR(`/api/partnerCompanies/${user?.id ?? ""}`, fetcher);
+  } = useSWR<SWRDataType>(`/api/partnerCompanies/${user?.id ?? ""}`, fetcher);
 
   async function handleDelete() {
     try {
@@ -167,7 +170,7 @@ export function UpdateInvoiceForm({ value, onClose }: IUpdateInvoiceFormProps) {
     );
   }
 
-  const partners: PartnerCompanyType[] = partnersData.partnerCompanies;
+  const partners = partnersData?.partnerCompanies ?? [];
 
   function handlePartnerChange(id: string) {
     setUpdatedInvoice((prev) => ({

@@ -9,6 +9,9 @@ import { UpdateCategoryForm } from "../UpdateCategoryForm";
 import { fetcher } from "@/lib/swr/fetcher";
 
 type OpenedModalType = "NEW" | "UPDATE" | null;
+type SWRDataType = {
+  categories: CategoryType[];
+};
 
 export function CategoriesList() {
   const { data: session } = useSession();
@@ -22,7 +25,7 @@ export function CategoriesList() {
     portalRef.current = document.querySelector("#modal-portal");
   }, []);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<SWRDataType>(
     `/api/categories/${user?.id ?? ""}`,
     fetcher
   );
@@ -35,7 +38,7 @@ export function CategoriesList() {
     return <p>Erro ao carregar categorias.</p>;
   }
 
-  const categories: CategoryType[] = data.categories;
+  const categories = data?.categories ?? [];
 
   function handleCategoryUpdate(id?: string) {
     if (!id) {

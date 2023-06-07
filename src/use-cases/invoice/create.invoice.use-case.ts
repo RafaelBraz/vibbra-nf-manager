@@ -4,7 +4,7 @@ interface ICreateInvoiceUseCaseParams {
   data: {
     userId: string;
     companyId: string;
-    number: number;
+    number: string;
     value: number;
     description: string;
     providedAt: string;

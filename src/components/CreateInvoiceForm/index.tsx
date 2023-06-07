@@ -11,6 +11,9 @@ import axios from "axios";
 interface ICreateInvoiceFormProps {
   onClose: () => void;
 }
+type SWRDataType = {
+  partnerCompanies: PartnerCompanyType[];
+};
 
 export function CreateInvoiceForm({ onClose }: ICreateInvoiceFormProps) {
   const { data: session } = useSession();
@@ -30,7 +33,7 @@ export function CreateInvoiceForm({ onClose }: ICreateInvoiceFormProps) {
     data: partnersData,
     error,
     isLoading,
-  } = useSWR(`/api/partnerCompanies/${user?.id ?? ""}`, fetcher);
+  } = useSWR<SWRDataType>(`/api/partnerCompanies/${user?.id ?? ""}`, fetcher);
 
   function handleClose() {
     onClose();
@@ -78,7 +81,7 @@ export function CreateInvoiceForm({ onClose }: ICreateInvoiceFormProps) {
     );
   }
 
-  const partners: PartnerCompanyType[] = partnersData.partnerCompanies;
+  const partners = partnersData?.partnerCompanies ?? [];
 
   function handlePartnerChange(id: string) {
     setNewInvoice((prev) => ({
