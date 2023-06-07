@@ -56,7 +56,7 @@ export default async function handler(
             name,
             paymentIn,
             providedAt,
-            value,
+            value: Number(value),
           },
         });
 

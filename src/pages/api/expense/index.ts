@@ -30,7 +30,7 @@ export default async function handler(
             paymentIn,
             providedAt,
             userId,
-            value,
+            value: Number(value),
           },
         });
 
