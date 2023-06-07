@@ -3,10 +3,8 @@ import { ToggleButton } from "../ToggleButton";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-interface ISettingsFormProps {}
-
-export function SettingsForm({}: ISettingsFormProps) {
-  const { data: session } = useSession();
+export function SettingsForm() {
+  const { data: session, update } = useSession();
 
   const [settings, setSettings] = useState({
     MEILimit: session?.user?.MEILimit ?? 81000,
@@ -42,6 +40,8 @@ export function SettingsForm({}: ISettingsFormProps) {
       if (res.status === 500) {
         throw new Error("Erro na atualização das preferências.");
       }
+
+      update();
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
