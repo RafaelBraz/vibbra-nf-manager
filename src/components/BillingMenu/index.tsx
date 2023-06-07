@@ -1,3 +1,4 @@
+import { ExpensesList } from "../ExpensesList";
 import { InvoiceList } from "../InvoiceList";
 
 export function BillingMenu() {
@@ -6,6 +7,7 @@ export function BillingMenu() {
       <h2 className="text-2xl">Menu de pagamentos</h2>
 
       <InvoiceList />
+      <ExpensesList />
     </div>
   );
 }

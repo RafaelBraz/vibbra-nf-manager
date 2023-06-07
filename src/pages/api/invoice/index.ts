@@ -43,7 +43,6 @@ export default async function handler(
         });
     }
   } catch (error) {
-    console.log(error);
     if (error instanceof Error) {
       return res
         .status(500)
