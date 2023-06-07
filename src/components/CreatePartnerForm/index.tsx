@@ -1,12 +1,17 @@
+import { PartnerCompanyType } from "@/types/partnerCompany.type";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { FormEvent, useState } from "react";
 
 interface ICreatePartnerFormProps {
   onClose: () => void;
+  onCreate: (partnerCompany: PartnerCompanyType) => void;
 }
 
-export function CreatePartnerForm({ onClose }: ICreatePartnerFormProps) {
+export function CreatePartnerForm({
+  onClose,
+  onCreate,
+}: ICreatePartnerFormProps) {
   const { data: session } = useSession();
   const [newPartnerCompany, setNewPartnerCompany] = useState({
     cnpj: "",
@@ -52,6 +57,8 @@ export function CreatePartnerForm({ onClose }: ICreatePartnerFormProps) {
         throw new Error("Erro no cadastro da empresa parceira.");
       }
 
+      onCreate(res.data.partnerCompany);
+
       onClose();
     } catch (error) {
       if (error instanceof Error) {
@@ -83,6 +90,7 @@ export function CreatePartnerForm({ onClose }: ICreatePartnerFormProps) {
           className="py-1 px-2 outline-none bg-zinc-50 border-2 border-zinc-300 rounded-md focus:border-zinc-900"
           value={newPartnerCompany.cnpj}
           onChange={(e) => handlePartnerChange("cnpj", e.target.value)}
+          required
         />
       </label>
 
@@ -94,6 +102,7 @@ export function CreatePartnerForm({ onClose }: ICreatePartnerFormProps) {
           className="py-1 px-2 outline-none bg-zinc-50 border-2 border-zinc-300 rounded-md focus:border-zinc-900"
           value={newPartnerCompany.name}
           onChange={(e) => handlePartnerChange("name", e.target.value)}
+          required
         />
       </label>
 
@@ -105,6 +114,7 @@ export function CreatePartnerForm({ onClose }: ICreatePartnerFormProps) {
           className="py-1 px-2 outline-none bg-zinc-50 border-2 border-zinc-300 rounded-md focus:border-zinc-900"
           value={newPartnerCompany.corporateName}
           onChange={(e) => handlePartnerChange("corporateName", e.target.value)}
+          required
         />
       </label>
 

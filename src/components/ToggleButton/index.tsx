@@ -1,9 +1,16 @@
 interface IToggleButtonProps {
-  value?: boolean;
   onChange: (value: boolean) => void;
+  value?: boolean;
+  textOnTrue?: string;
+  textOnFalse?: string;
 }
 
-export function ToggleButton({ value = false, onChange }: IToggleButtonProps) {
+export function ToggleButton({
+  onChange,
+  value = false,
+  textOnTrue = "ON",
+  textOnFalse = "OFF",
+}: IToggleButtonProps) {
   function handleToggle(value: boolean) {
     onChange(value);
   }
@@ -15,7 +22,7 @@ export function ToggleButton({ value = false, onChange }: IToggleButtonProps) {
         className={`py-1 px-2 w-20 ${value ? "bg-zinc-400 " : "bg-zinc-100 "}`}
         onClick={() => handleToggle(false)}
       >
-        OFF
+        {textOnFalse}
       </button>
 
       <button
@@ -23,7 +30,7 @@ export function ToggleButton({ value = false, onChange }: IToggleButtonProps) {
         className={`py-1 px-2 w-20 ${value ? "bg-zinc-100 " : "bg-zinc-400 "}`}
         onClick={() => handleToggle(true)}
       >
-        ON
+        {textOnTrue}
       </button>
     </div>
   );

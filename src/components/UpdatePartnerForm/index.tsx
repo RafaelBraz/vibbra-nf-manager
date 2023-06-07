@@ -1,25 +1,24 @@
-import { CategoryType } from "@/types/category,type";
+import type { PartnerCompanyType } from "@/types/partnerCompany.type";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { FormEvent, useState } from "react";
 
-interface ICreateCategoryFormProps {
+interface IUpdatePartnerFormProps {
+  value: Partial<PartnerCompanyType>;
   onClose: () => void;
-  onCreate: (category: CategoryType) => void;
+  onUpdate: (partnerCompany: PartnerCompanyType) => void;
 }
 
-export function CreateCategoryForm({
+export function UpdatePartnerForm({
+  value,
   onClose,
-  onCreate,
-}: ICreateCategoryFormProps) {
+  onUpdate,
+}: IUpdatePartnerFormProps) {
   const { data: session } = useSession();
-  const [newCategory, setNewCategory] = useState({
-    name: "",
-    description: "",
-  });
+  const [updatedPartnerCompany, setUpdatedPartner] = useState(value);
 
-  function handleCategoryChange(name: string, value: string) {
-    setNewCategory((prev) => ({
+  function handlePartnerChange(name: string, value: string) {
+    setUpdatedPartner((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -35,27 +34,27 @@ export function CreateCategoryForm({
         throw new Error("Erro ao identificar o seu usuário.");
       }
 
-      const { description, name } = newCategory;
+      const { cnpj, corporateName, name } = updatedPartnerCompany;
 
-      if (!description || !name) {
+      if (!cnpj || !corporateName || !name) {
         throw new Error("Todos os campos são obrigatórios.");
       }
 
-      const res = await axios("/api/category/", {
-        method: "POST",
+      const res = await axios(`/api/partnerCompany/${value.id}`, {
+        method: "PATCH",
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         data: {
-          userId,
-          description,
+          cnpj,
+          corporateName,
           name,
         },
       });
 
-      if (res.status === 500) {
-        throw new Error("Erro no cadastro da categoria.");
+      if (res.status !== 200) {
+        throw new Error("Erro na atualização da empresa parceira.");
       }
 
-      onCreate(res.data.category);
+      onUpdate(res.data.partnerCompany);
 
       onClose();
     } catch (error) {
@@ -76,9 +75,21 @@ export function CreateCategoryForm({
       onReset={handleReset}
       className="w-72 p-6 flex flex-col gap-4"
     >
-      <h4>Cadastrar Categoria</h4>
+      <h4>Atualizar Empresa Parceira</h4>
 
       <hr className="w-full border-b-1" />
+
+      <label className="flex flex-col gap-2">
+        <span>CNPJ:</span>
+        <input
+          type="text"
+          name="cnpj"
+          className="py-1 px-2 outline-none bg-zinc-50 border-2 border-zinc-300 rounded-md focus:border-zinc-900"
+          value={updatedPartnerCompany.cnpj}
+          onChange={(e) => handlePartnerChange("cnpj", e.target.value)}
+          required
+        />
+      </label>
 
       <label className="flex flex-col gap-2">
         <span>Nome:</span>
@@ -86,20 +97,20 @@ export function CreateCategoryForm({
           type="text"
           name="name"
           className="py-1 px-2 outline-none bg-zinc-50 border-2 border-zinc-300 rounded-md focus:border-zinc-900"
-          value={newCategory.name}
-          onChange={(e) => handleCategoryChange("name", e.target.value)}
+          value={updatedPartnerCompany.name}
+          onChange={(e) => handlePartnerChange("name", e.target.value)}
           required
         />
       </label>
 
       <label className="flex flex-col gap-2">
-        <span>Descrição:</span>
+        <span>Razão social:</span>
         <input
           type="text"
-          name="description"
+          name="corporateName"
           className="py-1 px-2 outline-none bg-zinc-50 border-2 border-zinc-300 rounded-md focus:border-zinc-900"
-          value={newCategory.description}
-          onChange={(e) => handleCategoryChange("description", e.target.value)}
+          value={updatedPartnerCompany.corporateName}
+          onChange={(e) => handlePartnerChange("corporateName", e.target.value)}
           required
         />
       </label>
@@ -109,7 +120,7 @@ export function CreateCategoryForm({
           type={"submit"}
           className="py-2 px-4 bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
         >
-          Cadastrar
+          Atualizar
         </button>
 
         <button

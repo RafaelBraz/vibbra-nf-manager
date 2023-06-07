@@ -53,7 +53,7 @@ export function SettingsForm({}: ISettingsFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <h3 className="text-xl">Configurações</h3>
+      <h3 className="py-2 text-xl border-y-2 border-zinc-200">Configurações</h3>
 
       <div className="flex items-center justify-between gap-4">
         <h4 className="text-lg">Limite de faturamento anual: </h4>
