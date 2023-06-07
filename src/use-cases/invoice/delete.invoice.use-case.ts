@@ -3,7 +3,7 @@ import { InvoiceService } from "@/services/invoice/invoice.service";
 interface IDeleteInvoiceUseCaseParams {
   where: {
     id?: string;
-    number?: number;
+    number?: string;
   };
 }
 

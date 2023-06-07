@@ -1,11 +1,11 @@
-import { PrismaClientSingleton } from "@/lib/prisma/prisma.singleton";
 import { Prisma, PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma/";
 
 export class CategoryService {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = PrismaClientSingleton.getClient();
+    this.prisma = prisma;
   }
 
   async findUnique(where: Prisma.CategoryWhereUniqueInput) {

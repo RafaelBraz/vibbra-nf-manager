@@ -6,7 +6,7 @@ interface IUpdateInvoiceUseCaseParams {
   };
   data: {
     companyId: string;
-    number: number;
+    number: string;
     value: number;
     description: string;
     providedAt: string;

@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
@@ -43,7 +43,8 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user, token }) {
+    // @ts-ignore
+    async session({ session }) {
       const email = session.user.email;
       const name = session.user.name;
 

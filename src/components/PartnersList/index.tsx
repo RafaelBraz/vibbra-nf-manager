@@ -9,6 +9,9 @@ import { CreatePartnerForm } from "../CreatePartnerForm";
 import { UpdatePartnerForm } from "../UpdatePartnerForm";
 
 type OpenedModalType = "NEW" | "UPDATE" | null;
+type SWRDataType = {
+  partnerCompanies: PartnerCompanyType[];
+};
 
 export function PartnersList() {
   const { data: session } = useSession();
@@ -22,7 +25,7 @@ export function PartnersList() {
     portalRef.current = document.querySelector("#modal-portal");
   }, []);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<SWRDataType>(
     `/api/partnerCompanies/${user?.id ?? ""}`,
     fetcher
   );
@@ -35,7 +38,7 @@ export function PartnersList() {
     return <p>Erro ao carregar empresas parceiras.</p>;
   }
 
-  const partners: PartnerCompanyType[] = data.partnerCompanies;
+  const partners = data?.partnerCompanies ?? [];
 
   function handlePartnerUpdate(id?: string) {
     if (!id) {

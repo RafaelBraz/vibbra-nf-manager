@@ -5,11 +5,15 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/swr/fetcher";
 import { BillingIndicator } from "../BillingIndicator";
 
+type SWRDataType = {
+  invoices: InvoiceType[];
+};
+
 export function Dashboard() {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<SWRDataType>(
     `/api/invoices/${user?.id ?? ""}`,
     fetcher
   );
@@ -22,7 +26,7 @@ export function Dashboard() {
     return <p>Erro ao carregar notas fiscais.</p>;
   }
 
-  const invoices: InvoiceType[] = data.invoices;
+  const invoices = data?.invoices ?? [];
 
   const alreadyBilled = invoices.reduce((sum, value) => {
     const paymentYear = dayjs(value.paymentIn).year();
