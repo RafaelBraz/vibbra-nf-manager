@@ -139,11 +139,13 @@ export function CreateExpenseForm({ onClose }: ICreateExpenseFormProps) {
               {" "}
               -- select an option --{" "}
             </option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
+            {categories
+              .filter((category) => !!!category.archieved)
+              .map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
           </select>
         </label>
 

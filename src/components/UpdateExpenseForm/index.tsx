@@ -192,11 +192,18 @@ export function UpdateExpenseForm({ value, onClose }: IUpdateExpenseFormProps) {
               {" "}
               -- select an option --{" "}
             </option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
+            {categories
+              .filter((category) => {
+                if (category.id === updatedExpense.categoryId) {
+                  return true;
+                }
+                return !!!category.archieved;
+              })
+              .map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
           </select>
         </label>
 
