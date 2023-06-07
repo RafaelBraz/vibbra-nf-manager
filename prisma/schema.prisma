@@ -63,7 +63,7 @@ model Category {
 model Invoice {
   id          String         @id @default(cuid())
   value       Float
-  number      Int            @unique
+  number      String         @unique
   description String         @db.Text
   providedAt  DateTime
   paymentIn   DateTime

@@ -57,7 +57,7 @@ export default async function handler(
             number,
             paymentIn,
             providedAt,
-            value,
+            value: Number(value),
           },
         });
 
@@ -90,6 +90,7 @@ export default async function handler(
         });
     }
   } catch (error) {
+    console.log(error);
     if (error instanceof Error) {
       return res
         .status(500)
