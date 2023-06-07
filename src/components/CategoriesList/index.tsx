@@ -1,21 +1,20 @@
 import { CategoryType } from "@/types/category,type";
-import axios from "axios";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 import { Modal } from "../Modal";
 import { CreateCategoryForm } from "../CreateCategoryForm";
 import { UpdateCategoryForm } from "../UpdateCategoryForm";
+import { fetcher } from "@/lib/swr/fetcher";
 
-interface ICategoriesListProps {}
+type OpenedModalType = "NEW" | "UPDATE" | null;
 
-type OpenedModalType = "NEW-CATEGORY" | "UPDATE-CATEGORY" | null;
-
-export function CategoriesList({}: ICategoriesListProps) {
+export function CategoriesList() {
   const { data: session } = useSession();
+  const user = session?.user;
   const portalRef = useRef<any>(null);
   const [openedModal, setOpenedModal] = useState<OpenedModalType>(null);
-  const [categories, setCategories] = useState<Partial<CategoryType>[]>([]);
   const [updateCategory, setUpdateCategory] =
     useState<Partial<CategoryType> | null>(null);
 
@@ -23,23 +22,20 @@ export function CategoriesList({}: ICategoriesListProps) {
     portalRef.current = document.querySelector("#modal-portal");
   }, []);
 
-  useEffect(() => {
-    if (session?.user) {
-      const userId = session?.user.id;
+  const { data, error, isLoading } = useSWR(
+    `/api/categories/${user?.id ?? ""}`,
+    fetcher
+  );
 
-      axios(`/api/categories/${userId}`, {
-        method: "GET",
-        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-      }).then((res) => {
-        if (res.status !== 200) {
-          alert("Erro ao carregar categorias.");
-        }
-        if (res.data.categories.length > 0) {
-          setCategories([...res.data.categories]);
-        }
-      });
-    }
-  }, [session?.user]);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Erro ao carregar categorias.</p>;
+  }
+
+  const categories: CategoryType[] = data.categories;
 
   function handleCategoryUpdate(id?: string) {
     if (!id) {
@@ -54,7 +50,7 @@ export function CategoriesList({}: ICategoriesListProps) {
       return;
     }
 
-    setOpenedModal("UPDATE-CATEGORY");
+    setOpenedModal("UPDATE");
     setUpdateCategory(category);
   }
 
@@ -62,32 +58,15 @@ export function CategoriesList({}: ICategoriesListProps) {
     setOpenedModal(null);
   }
 
-  function onCreate(category: CategoryType) {
-    setCategories((prev) => [...prev, category]);
-  }
-
-  function onUpdate(updatedCategory: CategoryType) {
-    setCategories((prev) => [
-      ...prev.map((category) => {
-        if (category.id === updatedCategory.id) return updatedCategory;
-        return category;
-      }),
-    ]);
-  }
-
   const modals = {
-    "NEW-CATEGORY": (
+    NEW: (
       <Modal onClose={handleModalClose}>
-        <CreateCategoryForm onCreate={onCreate} onClose={handleModalClose} />
+        <CreateCategoryForm onClose={handleModalClose} />
       </Modal>
     ),
-    "UPDATE-CATEGORY": updateCategory && (
+    UPDATE: updateCategory && (
       <Modal onClose={handleModalClose}>
-        <UpdateCategoryForm
-          value={updateCategory}
-          onUpdate={onUpdate}
-          onClose={handleModalClose}
-        />
+        <UpdateCategoryForm value={updateCategory} onClose={handleModalClose} />
       </Modal>
     ),
   };
@@ -100,7 +79,7 @@ export function CategoriesList({}: ICategoriesListProps) {
 
       <button
         className="py-2 px-4 self-start bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
-        onClick={() => setOpenedModal("NEW-CATEGORY")}
+        onClick={() => setOpenedModal("NEW")}
       >
         Nova categoria
       </button>

@@ -1,21 +1,22 @@
+import type { FormEvent } from "react";
 import type { CategoryType } from "@/types/category,type";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useSWRConfig } from "swr";
 import axios from "axios";
 import { ToggleButton } from "../ToggleButton";
 
 interface IUpdateCategoryFormProps {
   value: Partial<CategoryType>;
   onClose: () => void;
-  onUpdate: (category: CategoryType) => void;
 }
 
 export function UpdateCategoryForm({
   value,
   onClose,
-  onUpdate,
 }: IUpdateCategoryFormProps) {
   const { data: session } = useSession();
+  const { mutate } = useSWRConfig();
   const [updatedCategory, setUpdatedCategory] = useState(value);
 
   function handleCategoryChange(name: string, value: string | boolean) {
@@ -55,7 +56,7 @@ export function UpdateCategoryForm({
         throw new Error("Erro na atualização da categoria.");
       }
 
-      onUpdate(res.data.category);
+      mutate(`/api/categories/${userId}`);
 
       onClose();
     } catch (error) {

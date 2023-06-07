@@ -1,18 +1,16 @@
-import { CategoryType } from "@/types/category,type";
-import axios from "axios";
+import type { FormEvent } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { useSWRConfig } from "swr";
+import axios from "axios";
 
 interface ICreateCategoryFormProps {
   onClose: () => void;
-  onCreate: (category: CategoryType) => void;
 }
 
-export function CreateCategoryForm({
-  onClose,
-  onCreate,
-}: ICreateCategoryFormProps) {
+export function CreateCategoryForm({ onClose }: ICreateCategoryFormProps) {
   const { data: session } = useSession();
+  const { mutate } = useSWRConfig();
   const [newCategory, setNewCategory] = useState({
     name: "",
     description: "",
@@ -55,7 +53,7 @@ export function CreateCategoryForm({
         throw new Error("Erro no cadastro da categoria.");
       }
 
-      onCreate(res.data.category);
+      mutate(`/api/categories/${userId}}`);
 
       onClose();
     } catch (error) {

@@ -1,20 +1,18 @@
+import type { FormEvent } from "react";
 import type { PartnerCompanyType } from "@/types/partnerCompany.type";
-import axios from "axios";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { useSWRConfig } from "swr";
+import axios from "axios";
 
 interface IUpdatePartnerFormProps {
   value: Partial<PartnerCompanyType>;
   onClose: () => void;
-  onUpdate: (partnerCompany: PartnerCompanyType) => void;
 }
 
-export function UpdatePartnerForm({
-  value,
-  onClose,
-  onUpdate,
-}: IUpdatePartnerFormProps) {
+export function UpdatePartnerForm({ value, onClose }: IUpdatePartnerFormProps) {
   const { data: session } = useSession();
+  const { mutate } = useSWRConfig();
   const [updatedPartnerCompany, setUpdatedPartner] = useState(value);
 
   function handlePartnerChange(name: string, value: string) {
@@ -54,7 +52,7 @@ export function UpdatePartnerForm({
         throw new Error("Erro na atualização da empresa parceira.");
       }
 
-      onUpdate(res.data.partnerCompany);
+      mutate(`/api/partnerCompanies/${userId}`);
 
       onClose();
     } catch (error) {

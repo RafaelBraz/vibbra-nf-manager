@@ -1,21 +1,20 @@
-import { PartnerCompanyType } from "@/types/partnerCompany.type";
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import type { PartnerCompanyType } from "@/types/partnerCompany.type";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import { fetcher } from "@/lib/swr/fetcher";
 import { Modal } from "../Modal";
 import { CreatePartnerForm } from "../CreatePartnerForm";
 import { UpdatePartnerForm } from "../UpdatePartnerForm";
-import { createPortal } from "react-dom";
 
-interface IPartnersListProps {}
+type OpenedModalType = "NEW" | "UPDATE" | null;
 
-type OpenedModalType = "NEW-PARTNER" | "UPDATE-PARTNER" | null;
-
-export function PartnersList({}: IPartnersListProps) {
+export function PartnersList() {
   const { data: session } = useSession();
+  const user = session?.user;
   const portalRef = useRef<any>(null);
   const [openedModal, setOpenedModal] = useState<OpenedModalType>(null);
-  const [partners, setPartners] = useState<Partial<PartnerCompanyType>[]>([]);
   const [updatePartner, setUpdatePartner] =
     useState<Partial<PartnerCompanyType> | null>(null);
 
@@ -23,23 +22,20 @@ export function PartnersList({}: IPartnersListProps) {
     portalRef.current = document.querySelector("#modal-portal");
   }, []);
 
-  useEffect(() => {
-    if (session?.user) {
-      const userId = session?.user.id;
+  const { data, error, isLoading } = useSWR(
+    `/api/partnerCompanies/${user?.id ?? ""}`,
+    fetcher
+  );
 
-      axios(`/api/partnerCompanies/${userId}`, {
-        method: "GET",
-        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-      }).then((res) => {
-        if (res.status !== 200) {
-          alert("Erro ao carregar empresas parceiras.");
-        }
-        if (res.data.partnerCompanies.length > 0) {
-          setPartners([...res.data.partnerCompanies]);
-        }
-      });
-    }
-  }, [session?.user]);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Erro ao carregar empresas parceiras.</p>;
+  }
+
+  const partners: PartnerCompanyType[] = data.partnerCompanies;
 
   function handlePartnerUpdate(id?: string) {
     if (!id) {
@@ -54,7 +50,7 @@ export function PartnersList({}: IPartnersListProps) {
       return;
     }
 
-    setOpenedModal("UPDATE-PARTNER");
+    setOpenedModal("UPDATE");
     setUpdatePartner(partner);
   }
 
@@ -62,32 +58,15 @@ export function PartnersList({}: IPartnersListProps) {
     setOpenedModal(null);
   }
 
-  function onCreate(partner: PartnerCompanyType) {
-    setPartners((prev) => [...prev, partner]);
-  }
-
-  function onUpdate(updatedPartner: PartnerCompanyType) {
-    setPartners((prev) => [
-      ...prev.map((partner) => {
-        if (partner.id === updatedPartner.id) return updatedPartner;
-        return partner;
-      }),
-    ]);
-  }
-
   const modals = {
-    "NEW-PARTNER": (
+    NEW: (
       <Modal onClose={handleModalClose}>
-        <CreatePartnerForm onCreate={onCreate} onClose={handleModalClose} />
+        <CreatePartnerForm onClose={handleModalClose} />
       </Modal>
     ),
-    "UPDATE-PARTNER": updatePartner && (
+    UPDATE: updatePartner && (
       <Modal onClose={handleModalClose}>
-        <UpdatePartnerForm
-          value={updatePartner}
-          onUpdate={onUpdate}
-          onClose={handleModalClose}
-        />
+        <UpdatePartnerForm value={updatePartner} onClose={handleModalClose} />
       </Modal>
     ),
   };
@@ -100,7 +79,7 @@ export function PartnersList({}: IPartnersListProps) {
 
       <button
         className="py-2 px-4 self-start bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
-        onClick={() => setOpenedModal("NEW-PARTNER")}
+        onClick={() => setOpenedModal("NEW")}
       >
         Nova empresa parceira
       </button>

@@ -1,18 +1,16 @@
-import { PartnerCompanyType } from "@/types/partnerCompany.type";
-import axios from "axios";
+import type { FormEvent } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { useSWRConfig } from "swr";
+import axios from "axios";
 
 interface ICreatePartnerFormProps {
   onClose: () => void;
-  onCreate: (partnerCompany: PartnerCompanyType) => void;
 }
 
-export function CreatePartnerForm({
-  onClose,
-  onCreate,
-}: ICreatePartnerFormProps) {
+export function CreatePartnerForm({ onClose }: ICreatePartnerFormProps) {
   const { data: session } = useSession();
+  const { mutate } = useSWRConfig();
   const [newPartnerCompany, setNewPartnerCompany] = useState({
     cnpj: "",
     corporateName: "",
@@ -57,7 +55,7 @@ export function CreatePartnerForm({
         throw new Error("Erro no cadastro da empresa parceira.");
       }
 
-      onCreate(res.data.partnerCompany);
+      mutate(`/api/partnerCompanies/${userId}`);
 
       onClose();
     } catch (error) {

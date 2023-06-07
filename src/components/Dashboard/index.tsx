@@ -1,13 +1,11 @@
+import type { InvoiceType } from "@/types/invoice.type";
 import { useSession } from "next-auth/react";
+import dayjs from "dayjs";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr/fetcher";
-import { InvoiceType } from "@/types/invoice.type";
 import { BillingIndicator } from "../BillingIndicator";
-import dayjs from "dayjs";
 
-interface IDashboardProps {}
-
-export function Dashboard({}: IDashboardProps) {
+export function Dashboard() {
   const { data: session } = useSession();
   const user = session?.user;
 
@@ -21,7 +19,6 @@ export function Dashboard({}: IDashboardProps) {
   }
 
   if (error) {
-    console.log(error);
     return <p>Erro ao carregar notas fiscais.</p>;
   }
 
