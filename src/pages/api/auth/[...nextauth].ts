@@ -4,6 +4,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import { UserService } from "@/services/user/user.service";
 import { GetUserUseCase } from "@/use-cases/user/get.user.use-case";
+import { removeObjectAttribute } from "@/util/object";
 
 export const authOptions = {
   providers: [
@@ -59,7 +60,7 @@ export const authOptions = {
         ...session,
         email,
         name,
-        user: dbUser,
+        user: removeObjectAttribute(dbUser, "password"),
       };
     },
   },

@@ -17,6 +17,9 @@ model User {
   companyName String
   phone       String
   password    String
+  MEILimit    Float            @default(81000)
+  emailAlert  Boolean          @default(false)
+  smsAlert    Boolean          @default(false)
   partners    PartnerCompany[]
   categories  Category[]
   invoices    Invoice[]

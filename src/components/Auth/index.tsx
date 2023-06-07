@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { CreateProviderUserForm } from "../CreateProviderUserForm";
 import { useState } from "react";
 import { CreateUserForm } from "../CreateUserForm";
+import { HeaderMenu } from "../HeaderMenu";
 
 interface IAuthProps {
   children: React.ReactNode;
@@ -27,14 +28,7 @@ export default function Auth({ children }: IAuthProps) {
 
     return (
       <>
-        <menu className="p-4 w-full bg-zinc-200 flex justify-end">
-          <button
-            className="py-2 px-4 bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
-            onClick={handleSignOut}
-          >
-            Desconectar
-          </button>
-        </menu>
+        <HeaderMenu onSignOut={handleSignOut} />
         {children}
       </>
     );

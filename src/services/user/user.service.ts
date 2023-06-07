@@ -1,11 +1,11 @@
+import { PrismaClientSingleton } from "@/lib/prisma/prisma.singleton";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { hash } from "bcrypt";
 
 export class UserService {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = PrismaClientSingleton.getClient();
   }
 
   async findUnique(where: Prisma.UserWhereUniqueInput) {
@@ -25,20 +25,34 @@ export class UserService {
   async create(data: Prisma.UserCreateInput) {
     const { cnpj, companyName, email, name, password, phone } = data;
 
-    const saltRounds = Number(process.env.SALT_ROUNDS);
-    const hashPassord = await hash(password, saltRounds);
-
     const createdUser = await this.prisma.user.create({
       data: {
         cnpj,
         companyName,
         email,
         name,
-        password: hashPassord,
+        password,
         phone,
       },
     });
 
     return createdUser;
+  }
+
+  async update(params: {
+    where: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUpdateInput;
+  }) {
+    const { where, data } = params;
+    return this.prisma.user.update({
+      where,
+      data,
+    });
+  }
+
+  async delete(where: Prisma.UserWhereUniqueInput) {
+    return this.prisma.user.delete({
+      where,
+    });
   }
 }
