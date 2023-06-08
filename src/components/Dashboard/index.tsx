@@ -42,8 +42,7 @@ export function Dashboard() {
 
   return (
     <div className="p-4 w-full flex flex-col gap-4 flex-wrap basis-1/2 bg-zinc-50">
-      <div className="flex justify-between">
-        <h2>{`CNPJ: ${user?.cnpj} | Razão social: ${user?.companyName}`}</h2>
+      <div className="flex justify-end">
         <BillingIndicator billed={alreadyBilled} limit={user?.MEILimit} />
       </div>
 

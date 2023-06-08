@@ -54,12 +54,14 @@ export default function Auth({ children }: IAuthProps) {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center items-center gap-4">
       {registered && <p>Usuário registrado com sucesso.</p>}
+
       <button
         className="py-2 px-4 bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
         onClick={handleSignIn}
       >
         Logar
       </button>
+
       <button
         className="py-2 px-4 bg-zinc-500 text-zinc-50 rounded-md hover:bg-zinc-400"
         onClick={() => setRegister(true)}
