@@ -119,3 +119,4 @@ Esses dois casos foram resolvidos com algumas pesquisas sobre o MEI.
 - [x] Fix: Type checkings (07/06/2023 - 12h00 à 07/06/2023 - 12h20)
 - [x] Listar/Lançar/Atualizar/Deletar Despesas (07/06/2023 - 18h45 à 07/06/2023 - 19h20)
 - [x] Fix: Adicionar (ou atualizar categoria) despesa em uma categoria arquivada (07/06/2023 - 19h25 à 07/06/2023 - 19h35)
+- [x] Charts (07/06/2023 - 19h40 à 07/06/2023 - 21h10)
