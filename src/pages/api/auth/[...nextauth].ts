@@ -42,6 +42,7 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  secret: process.env.NEXT_PUBLIC_SECRET,
   callbacks: {
     // @ts-ignore
     async session({ session }) {
@@ -64,8 +65,17 @@ export const authOptions = {
         user: removeObjectAttribute(dbUser, "password"),
       };
     },
+    // @ts-ignore
+    async jwt({ token }) {
+      return {
+        name: token.name,
+        email: token.email,
+        picture: token.picture,
+        sub: token.sub,
+        iat: token.iat,
+        exp: token.exp,
+      };
+    },
   },
-  secret: process.env.NEXT_PUBLIC_SECRET,
 };
-//
 export default NextAuth(authOptions);
