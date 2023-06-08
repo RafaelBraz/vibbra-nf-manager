@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr/fetcher";
 import { BillingIndicator } from "../BillingIndicator";
+import { Charts } from "../Charts";
 
 type SWRDataType = {
   invoices: InvoiceType[];
@@ -43,9 +44,10 @@ export function Dashboard() {
     <div className="p-4 w-full flex flex-col gap-4 flex-wrap basis-1/2 bg-zinc-50">
       <div className="flex justify-between">
         <h2>{`CNPJ: ${user?.cnpj} | Razão social: ${user?.companyName}`}</h2>
-
         <BillingIndicator billed={alreadyBilled} limit={user?.MEILimit} />
       </div>
+
+      <Charts />
     </div>
   );
 }
